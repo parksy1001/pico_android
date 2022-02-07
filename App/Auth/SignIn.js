@@ -77,10 +77,6 @@ export const SignIn = ({ navigation }) => {
 
 
   const LocationOn = async () => {
-   // console.log("Home stack.js");
-   
-
-   // console.log("async");
     try {
       const success = await LocationServicesDialogBox.checkLocationServicesIsEnabled({
         message: strings.location_popup,
@@ -93,21 +89,13 @@ export const SignIn = ({ navigation }) => {
         preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
         providerListener: false // true ==> Trigger locationProviderStatusChange listener when the location state changes
       });
-      //console.log("In Try");
-  // setIsLocationOff(true)
-      //console.log(success);
 
       Geolocation.getCurrentPosition((success)=>{
-      //console.log(success)
-      //console.log(success.coords.latitude);
-     // console.log(success.coords.longitude);
 
     }, (e)=>{console.log(e)}, {timeout: 40000});
 
 
     } catch (err) {
-      //console.log("catch");
-     // setIsLocationOff(true)
       //console.log(err)
     }
 

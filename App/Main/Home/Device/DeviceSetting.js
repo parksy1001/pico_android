@@ -50,11 +50,11 @@ export const DeviceSetting = ({ navigation }) => {
             navigation.navigate('RealTime');
           }, 3000);
         } else {
-          //===console.log(res.Msg);
+          //console.log(res.Msg);
         }
       })
       .catch((error) => {
-        //======console.error(error);
+        //console.error(error);
       });
   };
 

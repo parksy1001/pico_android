@@ -61,24 +61,15 @@ export default class FindPicoToScan_SignIn extends Component {
       preventBackClick: false, // true => To prevent the location services popup from closing when it is clicked back button
       providerListener: false // true ==> Trigger locationProviderStatusChange listener when the location state changes
   }).then((success) => {
-  
-    //setIsScanning(true);
-
     this.setState({isScanning : true});
-    //console.log(this.state.isScanning);
-     //=================console.log(success); // success => {alreadyEnabled: false, enabled: true, status: "enabled"}
-
   }).catch((error) => {
-      //================console.log(error.message); // error.message => "disabled"
+      //console.log(error.message); 
   });
   
   DeviceEventEmitter.addListener('locationProviderStatusChange', function(status) { // only trigger when "providerListener" is enabled
-     // console.log(status); //  status => {enabled: false, status: "disabled"} or {enabled: true, status: "enabled"}
+     // console.log(status); 
   });
 
- // console.log("end of DeviceEventEmmitter");
-
-  //console.log('start of componentdidmount2');
     // 어떤 부분인지 정확히 모르겠지만 없어도 돌아가길래 주석처리
    /*
     AppState.addEventListener('change', this.handleAppStateChange);
@@ -102,34 +93,13 @@ export default class FindPicoToScan_SignIn extends Component {
  
     });
     */
-  
-
-
 
     if (Platform.OS === 'android' && Platform.Version >= 23) {
       await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-        if (result) {
-          //=====console.log('Permission is OK');
-        } else {
-         /*
-          PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-            if (result) {
-              console.log('User accept');
-            } else {
-              console.log('User refuse');
-            }
-            
- });*/
-        }
       });
-    } else if (Platform.OS === 'ios') {
-    }
-
+    } 
     this.startScan();
- 
-
-   
-  }
+    }
   
   
    /*
@@ -166,7 +136,6 @@ export default class FindPicoToScan_SignIn extends Component {
 
 componentWillUnmount() {
   // used only when "providerListener" is enabled
-  //console.log("LocationServicesDialogBox.stopListener();");
   LocationServicesDialogBox.stopListener(); // Stop the "locationProviderStatusChange" listener
 }   
 
@@ -190,12 +159,6 @@ componentWillUnmount() {
         ) : (
           <CustomModal
             modalHeaderText={strings.connecting_popup_error_title}
-            // modalSubText={strings.connecting_popup_error_contents}
-            // modalSubText2={strings.connecting_popup_error_contents2}
-            // modalSubText3={strings.connecting_popup_error_contents3}
-            // modalSubText4={strings.connecting_popup_error_contents4}
-            // modalSubText5={strings.connecting_popup_error_contents5}
-            // modalSubText6={strings.connecting_popup_error_contents6}
             modalSubText_update={strings.connecting_popup_error_contents_update}
             modalSubText1_update={strings.connecting_popup_error_contents_update1}
             modalSubText2_update={strings.connecting_popup_error_contents_update2}
@@ -209,7 +172,6 @@ componentWillUnmount() {
 
   startScan() {
     if (!this.state.scanning) {
-      // this.setState({peripherals: new Map()});
       bleManager.startDeviceScan(null, { scanMode: ScanMode.LowLatency, allowDuplicates: false }, (err, device) => {
         if (err) console.log(err);
         else {

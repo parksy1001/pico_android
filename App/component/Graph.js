@@ -47,229 +47,51 @@ export const Graph = (props) => {
   const [stateArray, setStateArray] = useState([]);
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(0);
-  /*
-    let max =-1000
-    let min = 1000
-    for(let i = 0; i < data.length; i++){
-        if(max < data[i])
-        {
-            max = data[i]
-        }
-        if(min > data[i])
-        {
-            min =data[i]
-        }
-    }
-    if(min<0)
-    {
-        min = min *(-1)
-    }
-    const totalLength=(max+min)
-    const heightGrap = 200
-    const indexToClipFrom = 10
-    const limitLineValue = 28
-    let upperColorLimitValueInNumber = ((heightGrap/totalLength)*(max-limitLineValue))/2
-    let upperColorLimit = upperColorLimitValueInNumber.toString()+"%"
-  
-  const Clips = ({ x, y, width }) => (
-    <Defs key={'clips'}>
-      <ClipPath id="clip-path-1">
-        <Rect x={'0'} y={'0'} width={width} height={'100%'} />
-      </ClipPath>
-      <ClipPath id={'clip-path-2'}>
-        <Rect x={x(0)} y={'0'} width={width} height={'100%'} />
-      </ClipPath>
-    </Defs>
-  )
+ 
 
-  const HorizontalLine = (({ y }) => (
-    <Line
-      //key={ 'zero-axis' }
-      x1={'0%'}
-      x2={'100%'}
-      y1={y(16)}
-      y2={y(16)}
-      stroke={'grey'}
-      strokeDasharray={[4, 8]}
-      strokeWidth={2}
-    />
-  ))
+ const CustomLines = ({ x, y, data }) => {
 
+  return data.map((value, index, array) => {
 
-  // Line extras:
-  const DashedLine = ({ line }) => (
-    <Path
-      key={'line-1'}
-      d={line}
-      stroke={'red'}
-      strokeWidth={1}
-      fill={'none'}
-      //strokeDasharray={ [ 5, 0 ] }
-      clipPath={'url(#clip-path-2)'}
-    />
-  )
-
-  const Shadow = ({ line }) => (
-    <Path
-      y={3}
-      key={'shadow-1'}
-      d={line}
-      stroke={'rgba(134, 65, 244, 0.2)'}
-      strokeWidth={5}
-      fill={'none'}
-    />
-  )
-  */
-
-
-  const CustomLines = ({ x, y, data }) => {
-
-    return data.map((value, index, array) => {
-
-      if (index + 1 < array.length-1 ) {
-        if (array[index] && array[index + 1]) {
-          return (
-            <Line
-              key={index}
-              stroke={'#E7E7E7'}
-              strokeWidth={2}
-            
-              x1={x(index)}
-              x2={x(index + 1)}
-              y1={y(array[index])}
-              y2={y(array[index + 1])}
-            />
-          )
-
-
+    if (index + 1 < array.length-1 ) {
+      if (array[index] && array[index + 1]) {
+        return (<Line key={index} stroke={'#E7E7E7'} strokeWidth={2} x1={x(index)} x2={x(index + 1)} y1={y(array[index])} y2={y(array[index + 1])}/>)
+      } else {
+        if ((array[index] == 0) && (0 < index)) {
+          if (array[index - 1] && array[index + 1]) {
+            return (<Line key={index} stroke={'#E7E7E7'} strokeWidth={2} x1={x(index-1)} x2={x(index + 1)} y1={y(array[index-1])} y2={y(array[index + 1])}/>)
+          }
         } else {
-          if ((array[index] == 0) && (0 < index)) {
-            if (array[index - 1] && array[index + 1]) {
-              return (
-                <Line
-                  key={index}
-                  stroke={'#E7E7E7'}
-                  strokeWidth={2}
-                  x1={x(index-1)}
-                  x2={x(index + 1)}
-                  y1={y(array[index-1])}
-                  y2={y(array[index + 1])}
-                />
-              )
-            }
-          } 
-else {
-          return (
-            <Line
-              key={index}
-              stroke={'transparent'}
-              strokeWidth={2}
-              x1={x(index)}
-              x2={x(index + 1)}
-              y1={y(array[index])}
-              y2={y(array[index + 1])}
-            />
-          )
-        }
+           return ( <Line key={index} stroke={'transparent'} strokeWidth={2} x1={x(index)} x2={x(index + 1)} y1={y(array[index])} y2={y(array[index + 1])}/>)
+          }
+       }
+      }
+    });
+  };
+
+const CustomDashedLines = ({ x, y, data }) => {
+
+  return data.map((value, index, array) => {
+
+    if ((index + 2 < array.length-2)) {
+
+      if((array[index]!=0)&& (array[index+1]!=0)){
+
+      }else if((array[index]==0)&& (array[index+1]==0)){
+
+      }else {
+        if(array[index]!=0){
+          for( var i=index+2; i<array.length-2; i++){
+            if((array[i]!= 0)) break;
+          }
+          if(array[i]!=0){
+              return(<Line key={index} stroke={'#E7E7E7'} strokeWidth={2} x1={x(index)} x2={x(i)} y1={y(array[index])} y2={y(array[i])}/>);
+            } 
+          }
       }
     }
   });
-  };
-
-  const CustomDashedLines = ({ x, y, data }) => {
-
-    return data.map((value, index, array) => {
-
-      if ((index + 2 < array.length-2)) {
-
-        if((array[index]!=0)&& (array[index+1]!=0)){
-
-        }else if((array[index]==0)&& (array[index+1]==0)){
-
-        }
-        
-        else {
-          if(array[index]!=0){
-            for( var i=index+2; i<array.length-2; i++){
-              if((array[i]!= 0)) break;
-            }
-
-/*
-                console.log('=====================');
-                console.log(index);
-                console.log(i);
-                console.log(array[index]);
-                console.log(array[i]);*/
-
-
-
-              if(array[i]!=0){
-                return(
-                <Line
-                key={index}
-                stroke={'#E7E7E7'}
-                strokeWidth={2}
-                // strokeDasharray={ [ 4, 1 ] }
-                x1={x(index)}
-                x2={x(i)}
-                y1={y(array[index])}
-                y2={y(array[i])}
-              />);} 
-          }
-
-
-        }
-
-       
-      
-
-      }
-    });
-  };
-
-
-/*
-
-  const Custom2 = ({ x, y, data }) => {
-
-    return data.map((value, index, array) => {
-
-      if((index + 1 < array.length)&& (array[index] && array[index+1])){
-        if(setDotColorFunction(array[index])!=setDotColorFunction(array[index+1])){
-       
-          <Defs>
-            <ClipPath id="clip">
-            <Line
-                key={index}
-                stroke={'purple'}
-                strokeWidth={2}
-                x1={x(index)}
-                x2={x(index+1)}
-                y1={y(array[index])}
-                y2={y(array[index+1])}
-              />)
-             <Rect
-              x="0"
-              y="0"
-              width="100"
-              height="100"
-              clipPath="url(#clip)"
-            />
-            </ClipPath>
-          </Defs>
-         
-
-
-
-
-        }
-
-      }
-
-    });
-  };
-
-*/
+};
 
 
   function getTimeStamp() { 
@@ -278,16 +100,8 @@ else {
     let m = date.getMonth() + 1;
     let d = date.getDate();
     let t =date.getHours();
-    //console.log('getTimeStamp: ' + date);
-    
-    //console.log('------------------ddd------hh-----88ddddd888888---------');
-    //console.log(y);
-    //console.log(m);
-    //console.log(d);
-   // console.log(t);
-    //console.log('props day =' +props.day);
     const time_diff = date.getTimezoneOffset() / 60;
-    //console.log("시차  " + time_diff);
+
     // 현재 날짜에서 주어진 parameter만큼 day 값을 뺐을 때 0 이하의 음수일 경우
     // day, month, year 값 변경 사항을 보정해준다.
     if (d - (props.day) <= 0) {
@@ -339,25 +153,8 @@ else {
     new_date.setUTCMinutes(59);
     new_date.setUTCSeconds(0);
     new_date.setUTCMilliseconds(0);
-    
- 
-    //console.log(year);
-    //console.log(month);
-    //console.log(day);
-  /*  console.log(new_date);
-    console.log(new_date.getHours());
-    console.log(new_date.getUTCHours());
-    console.log(new_date);
-    */
     new_date.setUTCHours(new_date.getUTCHours() + time_diff - 9);
-    //console.log(new_date);
- 
-        // console.log('=======================================');
-    // console.log(new_date.toISOString());
     let s1 = new_date.toISOString()
-    //console.log(s1); 
-     //console.log('------------------ddd------hh-----88ddddd888888---------');
-    //console.log('getTimeStampresult : ' + s1)
     return s1;
   }
 
@@ -368,10 +165,7 @@ else {
     let y = date.getFullYear();
     let m = date.getMonth() + 1;
     let d = date.getDate();
-    //console.log('getTimeBefore1 : ' + date);
     const time_diff = date.getTimezoneOffset() / 60;
-  ////console.log("-----------------------------------");
-//console.log('props day =' +props.day);
 
     if (d - (props.day) <= 0) {
       if (m === 1 || m === 2 || m === 4 || m === 6 || m === 8 || m === 9 || m === 11) {
@@ -406,26 +200,9 @@ else {
     new_date.setUTCMinutes(0);
     new_date.setUTCSeconds(0);
     new_date.setUTCMilliseconds(0);
-    //console.log('------------------ddd------hh-----88ddddd888888---------');
-    //console.log(year);
-    // console.log(month);
-    //console.log(day);
-    // console.log(new_date);
-    //console.log(new_date.getHours());
-    //console.log(new_date.getUTCHours());
-    //new_date.setHours(new_date.getHours()+time_diff);
-    // console.log(new_date);
-
-    //console.log(new_date);
     new_date.setUTCHours(new_date.getUTCHours() + time_diff - 9);
-    //console.log(new_date);
-    //console.log('=======================================');
-    //console.log(new_date.toISOString());
-    let s1 = new_date.toISOString()
-    //console.log('getTimeBeforeresult : ' + s1)
-    //console.log(s1);
-    //console.log("-----------------------------------");
 
+    let s1 = new_date.toISOString()
     return s1;
   }
 
@@ -651,24 +428,6 @@ else {
     }
   }
 
-  // device의 SerialNum을 통해 원하는 측정 요소의 AirInfo를 가져온다. (새로 만든 API)
-  /*
-    1. Request param
-    {
-      "serialNum" : "e693ba08a33c",
-      "startTime" : "2018-03-05T10:12:55.293",
-      "endTime":"2018-03-08T04:29:49.427",
-      "type":"Co2" // { "Co2", "Humid", "Pm10", "Pm25", "Temperature", "Tvoc" };
-    }
-    2. Response
-    [
-      {"ReportTime":"2018-03-05T10:29:42.18","Co2":407},
-      {"ReportTime":"2018-03-05T10:42:02.327","Co2":406}
-    ]
-  */
-
-
-
   function makeDeviceAirInfo() {
     try {
       fetch('https://us-central1-pico-home.cloudfunctions.net/AirInfoByCond', {
@@ -704,49 +463,11 @@ else {
     }
   }
 
-
-
-  {/*
-  function makeDeviceAirInfo() {
-    fetch('https://us-central1-pico-home.cloudfunctions.net/GetAirInfo', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userid: userInfo.userid,
-        serialNum: device[id].SerialNum,
-        startTime: getTimeBefore(),
-        endTime: getTimeStamp(),
-        apiKey: userInfo.apiKey
-      }),
-    })
-      .then((response) => response.json())
-      .then((res) => {
-  
-       //console.log(res.Info.AirInfo[0].ReportTime);
-       const ReportTime = res.Info.AirInfo[0].ReportTime;
-
-       console.log(ReportTime);
-       const AirType= res.Info.AirInfo[0][props.state];
-       console.log(AirType);
-       setDeviceAirInfo(ReportTime, AirType);
-
-    });
-      
-  };
-  //////////////////*/}
   // 그래프의 값을 Dot으로 표현
   const Decorator = ({ x, y, data, line }) => {
-    //console.log(x);
-    //console.log(y);
-    //console.log(data);
    
     return data.map((value, index) => (
-    
-   
-    
+ 
       <Circle
         key={index}
         cx={x(index)}
@@ -759,12 +480,9 @@ else {
           setToolTipY(value);
           setToolTipIndex(index);
           setToolTipColor(setDotColorFunction(value));
-        }}
-      />
-      
-    )
-    );
-  };
+        }}/>
+        ));
+   };
 
 
   // 일정 구간('YYYY-MM-DD 00:00:00' ~ 'YYYY-MM-DD 00:00:00')동안 측정된 AirInfo를 가져온다.
@@ -777,44 +495,18 @@ else {
   useEffect(() => {
 
     try {
-      /*
-      // deviceAirInfo에서 필요한 State값만 순차적으로 tempArray에 저장
       for (let i = 0; i < deviceAirInfo.length; i++) {
-        console.log(deviceAirInfo[i]);
         tempArray.push(deviceAirInfo[i][props.state]);
-      }
-      *///=====================
-      for (let i = 0; i < deviceAirInfo.length; i++) {
-        //console.log(deviceAirInfo[i]);
-        tempArray.push(deviceAirInfo[i][props.state]);
-        //let hours=[];
-        // hours[i]=deviceAirInfo[i]['ReportTime']
         tempArrayTime.push(deviceAirInfo[i]['ReportTime'].substring(11, 16));
       }
-      //==============================
-      //console.log(tempArray);
-      //console.log(tempArrayTime);
-
-      //console.log('i가 '+ i + ' 일때 '+ TimeArray[i]+ ' 이다');
-
 
       for (let i = 0; i < 96; i++) {
         for (let j = 0; j < tempArray.length; j++) {
-
-          //console.log('i is '+i+' anf j is '+j);
           if (TimeArray[i] == tempArrayTime[j]) {
-            //console.log(i);
-            // console.log(TimeArray[i]);
-            // console.log(tempArray[j]);
             finalArray[i] = tempArray[j];
-
-            //finalArray.push(tempArray[j]);
-            //console.log('final array is' +finalArray[i]);
           }
         }
       }
-
-
 
       for (let i = 0; i < 96; i++) {
         if (finalArray[i] == null) {
@@ -822,21 +514,16 @@ else {
         }
       }
 
-
       setMinValue(Math.min.apply(null, finalArray)); // 최소값을 저장
       setMaxValue(Math.max.apply(null, finalArray)); // 최대값을 저장
-      //console.log(maxValue);
 
-
-     for (let i = 0; i < 96; i++) {
-
-          if(finalArray[i]>max){
-            max=finalArray[i];
-          }
-        
+      for (let i = 0; i < 96; i++) {
+        if(finalArray[i]>max){
+          max=finalArray[i];
+        } 
       }
 
-     for (let i = 0; i < 96; i++) {
+      for (let i = 0; i < 96; i++) {
         if (finalArray[i] != 0) {
           if(finalArray[i]<min){
             min=finalArray[i];
@@ -849,25 +536,9 @@ else {
         min=0;
       }
 
-
-
-
-  //console.log("min is " + max);
-  //console.log("min is " + min);
-
-  setMinValue(min);
-  setMaxValue(max);
-
-
-
-      // tempArray에 저장된 State값을 stateArray에 그대로 저장한다.
-
+      setMinValue(min);
+      setMaxValue(max);
       finalArray[96]= max+min;
-
-     // console.log(finalArray);
-
-
-
       setStateArray(finalArray);
       setIsLoading(true);
 
@@ -876,12 +547,9 @@ else {
         finalArray=[];
       }, 1000);
 
-
-
     } catch (exception) {
       console.log(exception);
     }
-
 
   }, [deviceAirInfo]);
 
@@ -909,9 +577,7 @@ else {
               width={setMBoxWidth(maxValue)}
               height={30}
               fill={colors.white}
-              stroke={colors.veryLightPink}
-
-            />
+              stroke={colors.veryLightPink}/>
             <Text x={20} y={35} stroke={setDotColorFunction(maxValue)}>
               Max : {maxValue} {setUnit(props.state)}
             </Text>
@@ -926,8 +592,7 @@ else {
               width={setMBoxWidth(minValue)}
               height={30}
               fill={colors.white}
-              stroke={colors.veryLightPink}
-            />
+              stroke={colors.veryLightPink} />
             <Text x={20} y={315} stroke={setDotColorFunction(minValue)}>
               Min : {minValue} {setUnit(props.state)}
             </Text>
@@ -938,8 +603,7 @@ else {
             color={tooltipColor}
             index={tooltipIndex}
             dataLength={stateArray.length}
-            state={props.state}
-          />
+            state={props.state}/>
         </LineChart>
       ) : (
           <View style={styles.indicator}>
@@ -951,8 +615,7 @@ else {
         data={xAxisDataNum}
         formatLabel={(index) => xAxisDataNum[index]}
         contentInset={{ left: 10, right: 10 }}
-        svg={axesSvg}
-      />
+        svg={axesSvg}/>
 
     </View>
 

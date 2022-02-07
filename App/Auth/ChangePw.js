@@ -35,7 +35,7 @@ export const ChangePassword = () => {
     })
       .then((response) => console.log(response))
       .catch((error) => {
-        //==console.error(error);
+        //console.error(error);
       });
     setCheckEmailAlert(true);
   };
